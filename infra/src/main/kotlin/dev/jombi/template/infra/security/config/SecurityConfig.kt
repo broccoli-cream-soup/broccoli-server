@@ -1,6 +1,7 @@
 package dev.jombi.template.infra.security.config
 
 import dev.jombi.template.infra.exception.AuthExceptionHandleFilter
+import dev.jombi.template.infra.security.jwt.JwtAuthFilter
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
@@ -14,7 +15,8 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 @Configuration
 @EnableWebSecurity
 class SecurityConfig(
-    private val authExceptionFilter: AuthExceptionHandleFilter
+    private val authExceptionFilter: AuthExceptionHandleFilter,
+    private val authFilter: JwtAuthFilter
 ) {
 
     @Bean
@@ -30,6 +32,7 @@ class SecurityConfig(
                     .anyRequest().authenticated()
             }
             .addFilterBefore(authExceptionFilter, UsernamePasswordAuthenticationFilter::class.java)
+            .addFilterAt(authFilter, UsernamePasswordAuthenticationFilter::class.java)
             .build()
     }
 
