@@ -14,8 +14,8 @@ interface SurveyService {
     fun editSurvey(surveyId: String, surveyEditDto: SurveyEditDto): SurveyDto
     fun deleteSurvey(surveyId: String)
 
-    fun addQuestion(surveyId: String, questionCreateDto: QuestionCreateDto)
-    fun getQuestion(surveyId: String, questionId: String): QuestionDto
-    fun editQuestion(surveyId: String, questionId: String, surveyCreateDto: QuestionCreateDto)
-    fun deleteQuestion(surveyId: String, questionId: String)
+    fun addQuestion(surveyId: String, questionCreateDto: QuestionCreateDto): SurveyDto
+//    fun getQuestion(surveyId: String, questionId: String): QuestionDto
+    fun editQuestion(surveyId: String, questionDto: QuestionDto): SurveyDto
+    fun deleteQuestion(surveyId: String, questionId: String): SurveyDto
 }
