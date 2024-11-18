@@ -31,6 +31,7 @@ sealed interface QuestionCreateDto {
         override val title: String,
         override val required: Boolean,
         val choices: List<ChoiceDto>,
+        val minSelection: Int,
         val maxSelection: Int,
     ) : QuestionCreateDto
 

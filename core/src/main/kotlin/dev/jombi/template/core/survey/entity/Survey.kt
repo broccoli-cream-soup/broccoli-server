@@ -16,4 +16,4 @@ data class Survey(
 
     val questions: Set<Question>,
     val surveyType: SurveyType = SurveyType.ANONYMOUS,
-)
+) { companion object }

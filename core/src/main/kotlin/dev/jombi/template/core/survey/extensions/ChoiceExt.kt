@@ -7,3 +7,8 @@ fun Choice.toDto() = ChoiceDto(
     name = name,
     id = id
 )
+
+fun Choice.Companion.from(dto: ChoiceDto) = Choice(
+    name = dto.name,
+    id = dto.id,
+)
