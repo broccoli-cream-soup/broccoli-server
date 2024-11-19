@@ -1,7 +1,5 @@
 package dev.jombi.template.infra.security.jwt
 
-import dev.jombi.template.common.exception.CustomException
-import dev.jombi.template.core.auth.exception.AuthExceptionDetails
 import dev.jombi.template.core.auth.extern.TokenGenerator
 import dev.jombi.template.core.member.MemberHolder
 import dev.jombi.template.infra.security.details.MemberDetailsService
@@ -28,26 +26,25 @@ class JwtTokenManager(
     override fun refreshToNewToken(refreshToken: String): String {
         // parse the refreshToken
         // Check the token is 'REFRESH' state (if token is 'ACCESS' throw CustomException)
-        val parsed = getTokenValidate(refreshToken)
-        val payload = parsed?.payload
+        val payload = getTokenValidate(refreshToken, JwtType.REFRESH)
 
-        if (payload?.subject != JwtType.REFRESH.name)
-            throw CustomException(AuthExceptionDetails.TOKEN_TYPE_MISMATCH)
+        val memberDetails = memberDetailsService.loadUserByUsername(payload?.subject.toString())
 
-        val memberDetails = memberDetailsService.loadUserByUsername(payload.subject)
         // authenticate manually
         val auth = JwtAuthToken(memberDetails, listOf())
         SecurityContextHolder.getContext().authentication = auth
         return generateToken(JwtType.ACCESS)
     }
 
-    override fun getTokenValidate(token: String): Jws<Claims>? {
+    override fun getTokenValidate(token: String, requiredType: JwtType): Claims? {
         try {
-            return Jwts.parser()
+            val parser = Jwts.parser()
                 .verifyWith(jwtProperties.secretKey)
                 .build()
                 .parse(token)
                 .accept(Jws.CLAIMS)
+            if (parser.header.type != requiredType.name) return null
+            return parser.payload
         } catch (_: JwtException) {
         } catch (_: IllegalArgumentException) {
         } catch (e: Exception) {
