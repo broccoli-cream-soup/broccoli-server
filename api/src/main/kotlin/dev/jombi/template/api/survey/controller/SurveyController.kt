@@ -5,6 +5,7 @@ import dev.jombi.template.business.survey.dto.SurveyEditDto
 import dev.jombi.template.business.survey.dto.create.QuestionCreateDto
 import dev.jombi.template.business.survey.dto.create.SurveyCreateDto
 import dev.jombi.template.business.survey.service.SurveyService
+import jakarta.validation.Valid
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -19,10 +20,10 @@ class SurveyController(
     fun getSurvey(@PathVariable id: String) = surveyService.getSurvey(id)
 
     @PostMapping
-    fun createSurvey(@RequestBody surveyCreateDto: SurveyCreateDto) = surveyService.createSurvey(surveyCreateDto)
+    fun createSurvey(@RequestBody @Valid surveyCreateDto: SurveyCreateDto) = surveyService.createSurvey(surveyCreateDto)
 
     @PatchMapping("/{id}")
-    fun getSurvey(@RequestBody surveyEditDto: SurveyEditDto, @PathVariable id: String) =
+    fun getSurvey(@RequestBody @Valid surveyEditDto: SurveyEditDto, @PathVariable id: String) =
         surveyService.editSurvey(id, surveyEditDto)
 
     @DeleteMapping("/{id}")
