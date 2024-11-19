@@ -26,8 +26,8 @@ class SurveyServiceImpl(
     private val memberHolder: MemberHolder,
 ) : SurveyService {
     override fun discoverSurvey(): List<SurveyInfoDto> {
-        val survey = surveyRepository.discover()  // TODO: Pagination
-        return survey.map { it.toDto() }
+        val survey = surveyRepository.findAllBy()  // TODO: Pagination
+        return survey.map { it.toDto(getAuthorById(it.authorId)) }
     }
 
     override fun createSurvey(dto: SurveyCreateDto): SurveyDto {
