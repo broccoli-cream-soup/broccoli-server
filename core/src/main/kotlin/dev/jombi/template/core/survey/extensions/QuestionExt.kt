@@ -18,21 +18,19 @@ fun Question.guessType() = when (this) {
     is Question.ValueRange -> QuestionType.VALUE_RANGE
 }
 
-fun Question.toDto() {
-    when (this) {
-        is Question.UserPrompt -> toDto()
+fun Question.toDto() = when (this) {
+    is Question.UserPrompt -> toDto()
 
-        is Question.SingleChoice -> toDto()
-        is Question.MultiChoice -> toDto()
+    is Question.SingleChoice -> toDto()
+    is Question.MultiChoice -> toDto()
 
-        is Question.Value -> toDto()
-        is Question.ValueRange -> toDto()
+    is Question.Value -> toDto()
+    is Question.ValueRange -> toDto()
 
-        is Question.CalendarRange -> toDto()
-        is Question.CalendarSingle -> toDto()
+    is Question.CalendarRange -> toDto()
+    is Question.CalendarSingle -> toDto()
 
-        is Question.Rating -> toDto()
-    }
+    is Question.Rating -> toDto()
 }
 private fun Question.UserPrompt.toDto() = QuestionDto.UserPromptDto(
     id = id.toString(),

@@ -7,6 +7,6 @@ data class SurveyDto(
     val name: String,
     val description: String,
 
-    val questions: List<Unit>,
+    val questions: List<QuestionDto>,
     val surveyType: SurveyTypeDto = SurveyTypeDto.ANONYMOUS,
 )
