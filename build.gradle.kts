@@ -62,6 +62,7 @@ allprojects {
 
         /// KOTLIN
         implementation(kotlin("reflect"))
+        api("com.fasterxml.jackson.module:jackson-module-kotlin:2.18.1")
 
         /// TEST
         testImplementation("org.springframework.boot:spring-boot-starter-test")

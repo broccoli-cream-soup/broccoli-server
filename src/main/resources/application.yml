@@ -13,6 +13,11 @@ spring:
     properties:
       hibernate:
         format_sql: true
+
+  data:
+    mongodb:
+      uri: ${MONGO_PROTOCOL}://${MONGO_USERNAME}:${MONGO_PASSWORD}@${MONGO_HOST}:${MONGO_PORT}
+      database: ${DATASOURCE_PATH}
 server:
   shutdown: graceful
 
