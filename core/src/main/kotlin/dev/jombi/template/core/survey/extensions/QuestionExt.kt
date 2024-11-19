@@ -2,9 +2,21 @@ package dev.jombi.template.core.survey.extensions
 
 import dev.jombi.template.business.survey.CreateDto.create.QuestionCreateDto
 import dev.jombi.template.business.survey.dto.QuestionDto
+import dev.jombi.template.business.survey.dto.QuestionType
 import dev.jombi.template.core.survey.entity.Choice
 import dev.jombi.template.core.survey.entity.Question
 import org.bson.types.ObjectId
+
+fun Question.guessType() = when (this) {
+    is Question.CalendarRange -> QuestionType.CALENDAR_RANGE
+    is Question.CalendarSingle -> QuestionType.CALENDAR_SINGLE
+    is Question.MultiChoice -> QuestionType.MULTI_CHOICE
+    is Question.Rating -> QuestionType.RATING
+    is Question.SingleChoice -> QuestionType.SINGLE_CHOICE
+    is Question.UserPrompt -> QuestionType.USER_PROMPT
+    is Question.Value -> QuestionType.VALUE
+    is Question.ValueRange -> QuestionType.VALUE_RANGE
+}
 
 fun Question.toDto() {
     when (this) {
