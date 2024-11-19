@@ -16,11 +16,7 @@ spring:
 
   data:
     mongodb:
-      host: ${MONGO_HOST}
-      port: ${MONGO_PORT}
-      database: ${DATASOURCE_PATH}
-      username: ${MONGO_USERNAME}
-      password: ${MONGO_PASSWORD}
+      uri: ${MONGO_PROTOCOL}://${MONGO_USERNAME}:${MONGO_PASSWORD}@${MONGO_HOST}:${MONGO_PORT}/${DATASOURCE_PATH}
 server:
   shutdown: graceful
 
