@@ -8,7 +8,7 @@ import com.fasterxml.jackson.databind.jsontype.TypeIdResolver
 import java.time.LocalDate
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.CUSTOM, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "type")
-@JsonTypeIdResolver(QuestionDto.QuestionTypeResolver::class)
+@JsonTypeIdResolver(QuestionDto.QuestionDtoTypeResolver::class)
 sealed interface QuestionDto {
     val id: String
     val title: String
@@ -95,7 +95,7 @@ sealed interface QuestionDto {
         override val type: QuestionType = QuestionType.RATING,
     ) : QuestionDto
 
-    class QuestionTypeResolver : TypeIdResolver {
+    class QuestionDtoTypeResolver : TypeIdResolver {
         private lateinit var type: JavaType
         override fun init(baseType: JavaType) {
             type = baseType
