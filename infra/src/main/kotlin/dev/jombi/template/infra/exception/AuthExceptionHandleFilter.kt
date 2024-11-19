@@ -22,7 +22,7 @@ class AuthExceptionHandleFilter(private val mapper: ObjectMapper) : OncePerReque
         try {
             chain.doFilter(request, response)
         } catch (e: RequestRejectedException){
-            response.writeJson(GlobalExceptionDetail.UNPROCESSABLE_REQUEST)
+            response.writeJson(GlobalExceptionDetail.UNPROCESSABLE_REQUEST) //header or data exception
         } catch (e: CustomException) {
             response.writeJson(e.detail, *e.formats)
         } catch (e: Exception) {
