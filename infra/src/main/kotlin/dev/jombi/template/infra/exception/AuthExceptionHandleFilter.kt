@@ -8,6 +8,7 @@ import dev.jombi.template.common.exception.response.ResponseError
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
+import org.springframework.security.web.firewall.RequestRejectedException
 import org.springframework.stereotype.Component
 import org.springframework.web.filter.OncePerRequestFilter
 
@@ -20,6 +21,8 @@ class AuthExceptionHandleFilter(private val mapper: ObjectMapper) : OncePerReque
     ) {
         try {
             chain.doFilter(request, response)
+        } catch (e: RequestRejectedException){
+            response.writeJson(GlobalExceptionDetail.UNPROCESSABLE_REQUEST)
         } catch (e: CustomException) {
             response.writeJson(e.detail, *e.formats)
         } catch (e: Exception) {
