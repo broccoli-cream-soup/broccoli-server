@@ -9,6 +9,8 @@ class ResponseError(code: String, status: Int, val detail: String) : ResponseEmp
         fun of(message: ExceptionDetail, vararg args: Any?) =
             ResponseEntity
                 .status(message.status)
-                .body(ResponseError(message.code, message.status.value(), message.message.format(*args)))
+                .body(ofRaw(message, *args))
+        fun ofRaw(message: ExceptionDetail, vararg args: Any?) =
+            ResponseError(message.code, message.status.value(), message.message.format(*args))
     }
 }
