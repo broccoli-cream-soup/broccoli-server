@@ -16,8 +16,6 @@ class JwtProvider(
     private val memberDetailsService: MemberDetailsService
 ) : AuthenticationProvider {
 
-    //여기서는 우리 jwt 가 맞는지 확인 후 맞으면 userDetails/ authorities return
-    //else -> auth error throw
     override fun authenticate(authentication: Authentication): Authentication {
         // JwtAuthToken
         if (authentication.isAuthenticated) return authentication

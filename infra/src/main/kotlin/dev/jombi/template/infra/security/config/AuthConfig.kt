@@ -12,8 +12,6 @@ import org.springframework.security.crypto.password.PasswordEncoder
 
 @Configuration
 class AuthConfig {
-    //DAO auth provider
-    //provider list
     @Bean
     fun passwordEncoder(): PasswordEncoder {
         return BCryptPasswordEncoder()
