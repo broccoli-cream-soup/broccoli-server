@@ -7,4 +7,5 @@ import org.springframework.stereotype.Component
 @Component
 class MemberHolder {
     fun get() = (SecurityContextHolder.getContext().authentication.principal as MemberDetails).member
+    fun getOrNull() = (SecurityContextHolder.getContext().authentication.principal as? MemberDetails)?.member
 }
