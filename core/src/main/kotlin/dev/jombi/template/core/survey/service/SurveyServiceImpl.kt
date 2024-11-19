@@ -1,9 +1,10 @@
 package dev.jombi.template.core.survey.service
 
-import dev.jombi.template.business.survey.dto.create.QuestionCreateDto
 import dev.jombi.template.business.survey.dto.QuestionDto
 import dev.jombi.template.business.survey.dto.SurveyDto
 import dev.jombi.template.business.survey.dto.SurveyEditDto
+import dev.jombi.template.business.survey.dto.SurveyInfoDto
+import dev.jombi.template.business.survey.dto.create.QuestionCreateDto
 import dev.jombi.template.business.survey.dto.create.SurveyCreateDto
 import dev.jombi.template.business.survey.service.SurveyService
 import dev.jombi.template.common.exception.CustomException
@@ -24,6 +25,11 @@ class SurveyServiceImpl(
     private val memberRepository: MemberJpaRepository,
     private val memberHolder: MemberHolder,
 ) : SurveyService {
+    override fun discoverSurvey(): List<SurveyInfoDto> {
+        val survey = surveyRepository.discover()  // TODO: Pagination
+        return survey.map { it.toDto() }
+    }
+
     override fun createSurvey(dto: SurveyCreateDto): SurveyDto {
         val me = memberHolder.get()
 

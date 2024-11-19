@@ -5,10 +5,13 @@ import dev.jombi.template.business.survey.dto.QuestionDto
 import dev.jombi.template.business.survey.dto.create.SurveyCreateDto
 import dev.jombi.template.business.survey.dto.SurveyDto
 import dev.jombi.template.business.survey.dto.SurveyEditDto
+import dev.jombi.template.business.survey.dto.SurveyInfoDto
 import org.springframework.stereotype.Service
 
 @Service
 interface SurveyService {
+    fun discoverSurvey(): List<SurveyInfoDto>
+
     fun createSurvey(dto: SurveyCreateDto): SurveyDto
     fun getSurvey(surveyId: String): SurveyDto
     fun editSurvey(surveyId: String, surveyEditDto: SurveyEditDto): SurveyDto
