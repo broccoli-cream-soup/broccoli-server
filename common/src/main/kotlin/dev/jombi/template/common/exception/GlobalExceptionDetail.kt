@@ -11,6 +11,7 @@ enum class GlobalExceptionDetail(override val message: String, override val stat
     UNSUPPORTED_MEDIA_TYPE("미디어 '%s'는 지원되지 않음. (지원하는 미디어: '%s')", HttpStatus.BAD_REQUEST),
     METHOD_NOT_SUPPORTED("메소드 '%s'(은)는 지원되지 않음. (지원하는 메소드: '%s')", HttpStatus.NOT_FOUND),
     UNPROCESSABLE_REQUEST("요청 헤더 또는 데이터가 잘못되었거나 처리할 수 없음", HttpStatus.BAD_REQUEST),
+    ACCESS_DENIED("권한이 없음", HttpStatus.FORBIDDEN),
     ;
 
     override val code = name
