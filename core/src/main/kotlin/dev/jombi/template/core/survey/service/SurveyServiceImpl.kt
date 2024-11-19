@@ -8,7 +8,6 @@ import dev.jombi.template.business.survey.dto.create.SurveyCreateDto
 import dev.jombi.template.business.survey.service.SurveyService
 import dev.jombi.template.common.exception.CustomException
 import dev.jombi.template.core.common.entity.FetchableId
-import dev.jombi.template.core.common.id.ne
 import dev.jombi.template.core.member.MemberHolder
 import dev.jombi.template.core.member.repository.MemberJpaRepository
 import dev.jombi.template.core.survey.entity.Question
@@ -16,12 +15,11 @@ import dev.jombi.template.core.survey.entity.Survey
 import dev.jombi.template.core.survey.exception.SurveyExceptionDetails
 import dev.jombi.template.core.survey.extensions.*
 import dev.jombi.template.core.survey.repository.SurveyRepository
-import org.bson.types.ObjectId
-import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 
 @Service
 class SurveyServiceImpl(
+    private val surveyDelegate: SurveyRepositoryDelegate,
     private val surveyRepository: SurveyRepository,
     private val memberRepository: MemberJpaRepository,
     private val memberHolder: MemberHolder,
@@ -35,15 +33,14 @@ class SurveyServiceImpl(
     }
 
     override fun getSurvey(surveyId: String): SurveyDto {
-        val ent = surveyRepository.findByIdOrNull(ObjectId(surveyId))
-            ?: throw CustomException(SurveyExceptionDetails.SURVEY_NOT_FOUND, surveyId)
+        val ent = surveyDelegate.findById(surveyId)
         val authorName = getAuthorById(ent.authorId)
 
         return ent.toDto(authorName)
     }
 
     override fun editSurvey(surveyId: String, surveyEditDto: SurveyEditDto): SurveyDto {
-        val ent = getSurveyWithCheck(ObjectId(surveyId))
+        val ent = surveyDelegate.findWithOwnerCheck(surveyId)
 
         val (name, description, surveyType) = surveyEditDto
 
@@ -59,12 +56,12 @@ class SurveyServiceImpl(
     }
 
     override fun deleteSurvey(surveyId: String) {
-        val ent = getSurveyWithCheck(ObjectId(surveyId))
+        val ent = surveyDelegate.findWithOwnerCheck(surveyId)
         surveyRepository.delete(ent)
     }
 
     override fun addQuestion(surveyId: String, questionCreateDto: QuestionCreateDto): SurveyDto {
-        val survey = getSurveyWithCheck(ObjectId(surveyId))
+        val survey = surveyDelegate.findWithOwnerCheck(surveyId)
 
         val questions = survey.questions + Question.create(questionCreateDto)
         val final = surveyRepository.save(survey.copy(questions = questions))
@@ -73,7 +70,7 @@ class SurveyServiceImpl(
     }
 
     override fun editQuestion(surveyId: String, questionDto: QuestionDto): SurveyDto {
-        val survey = getSurveyWithCheck(ObjectId(surveyId))
+        val survey = surveyDelegate.findWithOwnerCheck(surveyId)
 
         val questionId = questionDto.id
         val question = survey.questions.find { it.id.toString() == questionId }
@@ -95,7 +92,7 @@ class SurveyServiceImpl(
     }
 
     override fun deleteQuestion(surveyId: String, questionId: String): SurveyDto {
-        val survey = getSurveyWithCheck(ObjectId(surveyId))
+        val survey = surveyDelegate.findWithOwnerCheck(surveyId)
 
         val question = survey.questions.find { it.id.toString() == questionId }
             ?: throw CustomException(SurveyExceptionDetails.QUESTION_NOT_FOUND, questionId)
@@ -110,13 +107,4 @@ class SurveyServiceImpl(
     }
 
     private fun getAuthorById(memberId: Long) = FetchableId(memberId).fetch(memberRepository)?.name ?: "사라진 유저"
-    private fun getSurveyWithCheck(objectId: ObjectId): Survey {
-        val survey = surveyRepository.findByIdOrNull(objectId)
-            ?: throw CustomException(SurveyExceptionDetails.SURVEY_NOT_FOUND, objectId.toString())
-
-        if (memberHolder.get().id ne survey.authorId)
-            throw CustomException(SurveyExceptionDetails.NOT_YOUR_SURVEY, survey.id.toString())
-
-        return survey
-    }
 }
