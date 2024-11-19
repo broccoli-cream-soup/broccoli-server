@@ -23,14 +23,14 @@ sealed interface AnswerDto {
 
     data class SingleChoiceDto(
         override val questionId: String,
-        val choice: Long,
+        val choice: Int,
 
         override val type: QuestionType = QuestionType.SINGLE_CHOICE,
     ) : AnswerDto
 
     data class MultiChoiceDto(
         override val questionId: String,
-        val choice: List<Long>,
+        val choice: List<Int>,
 
         override val type: QuestionType = QuestionType.MULTI_CHOICE,
     ) : AnswerDto

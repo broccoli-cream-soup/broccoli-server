@@ -1,9 +1,21 @@
 package dev.jombi.template.core.reply.extensions
 
 import dev.jombi.template.business.reply.dto.AnswerDto
+import dev.jombi.template.business.survey.dto.QuestionType
 import dev.jombi.template.core.reply.entity.Answer
 import dev.jombi.template.core.reply.entity.RankedChoice
 import org.bson.types.ObjectId
+
+fun Answer.guessType() = when (this) {
+    is Answer.CalendarRange -> QuestionType.CALENDAR_RANGE
+    is Answer.CalendarSingle -> QuestionType.CALENDAR_SINGLE
+    is Answer.MultiChoice -> QuestionType.MULTI_CHOICE
+    is Answer.Rating -> QuestionType.RATING
+    is Answer.SingleChoice -> QuestionType.SINGLE_CHOICE
+    is Answer.UserPrompt -> QuestionType.USER_PROMPT
+    is Answer.Value -> QuestionType.VALUE
+    is Answer.ValueRange -> QuestionType.VALUE_RANGE
+}
 
 fun Answer.Companion.from(dto: AnswerDto) = when (dto) {
     is AnswerDto.CalendarRangeDto -> Answer.CalendarRange.from(dto)
