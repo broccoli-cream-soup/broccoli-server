@@ -2,6 +2,7 @@ package dev.jombi.template.infra.security.config
 
 import dev.jombi.template.infra.exception.AuthExceptionHandleFilter
 import dev.jombi.template.infra.security.jwt.JwtAuthFilter
+import jakarta.servlet.http.HttpServletResponse
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
@@ -26,6 +27,13 @@ class SecurityConfig(
             .csrf { it.disable() }
             .cors { it.configurationSource(corsConfigurationSource()) }
             .sessionManagement { it.disable() }
+            .exceptionHandling {
+                it.accessDeniedHandler({ _, response, exception ->
+                    exception.printStackTrace()
+                    response.status = HttpServletResponse.SC_FORBIDDEN
+                    response.writer.write("Access Denied: ${exception.message}")
+                })
+            }
             .authorizeHttpRequests {
                 it
                     .requestMatchers("/auth/**").anonymous() // .permitAll()
