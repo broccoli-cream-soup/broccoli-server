@@ -1,6 +1,6 @@
 package dev.jombi.template.business.survey.service
 
-import dev.jombi.template.business.survey.CreateDto.create.QuestionCreateDto
+import dev.jombi.template.business.survey.dto.create.QuestionCreateDto
 import dev.jombi.template.business.survey.dto.QuestionDto
 import dev.jombi.template.business.survey.dto.create.SurveyCreateDto
 import dev.jombi.template.business.survey.dto.SurveyDto

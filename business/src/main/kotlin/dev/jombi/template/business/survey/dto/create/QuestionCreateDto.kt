@@ -1,4 +1,4 @@
-package dev.jombi.template.business.survey.CreateDto.create
+package dev.jombi.template.business.survey.dto.create
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo
 import com.fasterxml.jackson.annotation.JsonTypeName

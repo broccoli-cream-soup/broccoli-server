@@ -1,6 +1,6 @@
 package dev.jombi.template.core.survey.extensions
 
-import dev.jombi.template.business.survey.CreateDto.create.QuestionCreateDto
+import dev.jombi.template.business.survey.dto.create.QuestionCreateDto
 import dev.jombi.template.business.survey.dto.QuestionDto
 import dev.jombi.template.business.survey.dto.QuestionType
 import dev.jombi.template.core.survey.entity.Choice
