@@ -20,13 +20,16 @@ import dev.jombi.template.core.survey.service.SurveyRepositoryDelegate
 import org.bson.types.ObjectId
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 @Service
+@Transactional(readOnly = true, rollbackFor = [Exception::class])
 class ReplyServiceImpl(
     private val replyRepository: ReplyRepository,
     private val surveyDelegate: SurveyRepositoryDelegate,
     private val holder: MemberHolder,
 ) : ReplyService {
+    @Transactional(rollbackFor = [Exception::class])
     override fun createReply(dto: ReplyCreateDto): ReplyDto {
         val me = holder.getOrNull()
 
@@ -95,6 +98,7 @@ class ReplyServiceImpl(
         return found.map { it.toDto() }
     }
 
+    @Transactional(rollbackFor = [Exception::class])
     override fun editReply(replyId: String, answerDto: AnswerDto): ReplyDto {
         val found = replyRepository.findByIdOrNull(ObjectId(replyId))
             ?: throw CustomException(ReplyExceptionDetails.REPLY_NOT_FOUND)

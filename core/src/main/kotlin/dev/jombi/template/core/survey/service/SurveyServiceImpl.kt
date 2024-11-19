@@ -17,8 +17,10 @@ import dev.jombi.template.core.survey.exception.SurveyExceptionDetails
 import dev.jombi.template.core.survey.extensions.*
 import dev.jombi.template.core.survey.repository.SurveyRepository
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 @Service
+@Transactional(readOnly = true, rollbackFor = [Exception::class])
 class SurveyServiceImpl(
     private val surveyDelegate: SurveyRepositoryDelegate,
     private val surveyRepository: SurveyRepository,
@@ -30,6 +32,7 @@ class SurveyServiceImpl(
         return survey.map { it.toDto(getAuthorById(it.authorId)) }
     }
 
+    @Transactional(rollbackFor = [Exception::class])
     override fun createSurvey(dto: SurveyCreateDto): SurveyDto {
         val me = memberHolder.get()
 
@@ -45,6 +48,7 @@ class SurveyServiceImpl(
         return ent.toDto(authorName)
     }
 
+    @Transactional(rollbackFor = [Exception::class])
     override fun editSurvey(surveyId: String, surveyEditDto: SurveyEditDto): SurveyDto {
         val ent = surveyDelegate.findWithOwnerCheck(surveyId)
 
@@ -61,11 +65,13 @@ class SurveyServiceImpl(
         return edited.toDto(memberHolder.get().name)
     }
 
+    @Transactional(rollbackFor = [Exception::class])
     override fun deleteSurvey(surveyId: String) {
         val ent = surveyDelegate.findWithOwnerCheck(surveyId)
         surveyRepository.delete(ent)
     }
 
+    @Transactional(rollbackFor = [Exception::class])
     override fun addQuestion(surveyId: String, questionCreateDto: QuestionCreateDto): SurveyDto {
         val survey = surveyDelegate.findWithOwnerCheck(surveyId)
 
@@ -80,6 +86,7 @@ class SurveyServiceImpl(
         return final.toDto(memberHolder.get().name)
     }
 
+    @Transactional(rollbackFor = [Exception::class])
     override fun editQuestion(surveyId: String, questionDto: QuestionDto): SurveyDto {
         val survey = surveyDelegate.findWithOwnerCheck(surveyId)
 
@@ -105,6 +112,7 @@ class SurveyServiceImpl(
         return final.toDto(memberHolder.get().name)
     }
 
+    @Transactional(rollbackFor = [Exception::class])
     override fun deleteQuestion(surveyId: String, questionId: String): SurveyDto {
         val survey = surveyDelegate.findWithOwnerCheck(surveyId)
 
