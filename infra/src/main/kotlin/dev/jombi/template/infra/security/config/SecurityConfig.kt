@@ -26,8 +26,8 @@ class SecurityConfig(
             .sessionManagement { it.disable() }
             .authorizeHttpRequests {
                 it
-                    .requestMatchers("/auth/**").anonymous() // .permitAll()
-                    .anyRequest().authenticated()
+//                    .requestMatchers("/auth/**").anonymous() // .permitAll()
+                    .anyRequest().permitAll()
             }
             .addFilterBefore(authExceptionFilter, UsernamePasswordAuthenticationFilter::class.java)
             .build()

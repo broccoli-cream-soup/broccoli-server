@@ -95,7 +95,7 @@ class ReplyServiceImpl(
         return found.map { it.toDto() }
     }
 
-    override fun editReply(surveyId: String, replyId: String, answerDto: AnswerDto): ReplyDto {
+    override fun editReply(replyId: String, answerDto: AnswerDto): ReplyDto {
         val found = replyRepository.findByIdOrNull(ObjectId(replyId))
             ?: throw CustomException(ReplyExceptionDetails.REPLY_NOT_FOUND)
 
