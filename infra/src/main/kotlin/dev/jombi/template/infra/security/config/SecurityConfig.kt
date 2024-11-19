@@ -8,6 +8,7 @@ import dev.jombi.template.infra.security.jwt.JwtAuthFilter
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.http.HttpMethod
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.web.SecurityFilterChain
@@ -39,8 +40,10 @@ class SecurityConfig(
             }
             .authorizeHttpRequests {
                 it
-//                    .requestMatchers("/auth/**").anonymous() // .permitAll()
-                    .anyRequest().permitAll()
+                    .requestMatchers("/auth/**").anonymous() // .permitAll()
+                    .requestMatchers(HttpMethod.GET, "/survey", "/survey/**").permitAll()
+                    .requestMatchers(HttpMethod.POST, "/reply").permitAll()
+                    .anyRequest().authenticated()
             }
             .addFilterBefore(authExceptionFilter, UsernamePasswordAuthenticationFilter::class.java)
             .addFilterAt(authFilter, UsernamePasswordAuthenticationFilter::class.java)
