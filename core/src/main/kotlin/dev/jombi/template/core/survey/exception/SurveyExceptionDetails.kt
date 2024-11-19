@@ -9,6 +9,7 @@ enum class SurveyExceptionDetails(override val message: String, override val sta
 
     QUESTION_NOT_FOUND("설문에서 아이디가 '%s'인 질문을 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
     QUESTION_TYPE_MISMATCH("질문 '%s'의 질문 타입이 기존과 다릅니다. (필요: %s).", HttpStatus.BAD_REQUEST),
+    QUESTION_VALIDATION_FAILED("질문의 검증에 실패하였습니다.", HttpStatus.BAD_REQUEST),
     ;
 
     override val code: String get() = name

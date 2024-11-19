@@ -63,7 +63,12 @@ class SurveyServiceImpl(
     override fun addQuestion(surveyId: String, questionCreateDto: QuestionCreateDto): SurveyDto {
         val survey = surveyDelegate.findWithOwnerCheck(surveyId)
 
-        val questions = survey.questions + Question.create(questionCreateDto)
+        val created = Question.create(questionCreateDto)
+
+        if (!created.validate())
+            throw CustomException(SurveyExceptionDetails.QUESTION_VALIDATION_FAILED)
+
+        val questions = survey.questions + created
         val final = surveyRepository.save(survey.copy(questions = questions))
 
         return final.toDto(memberHolder.get().name)
@@ -79,6 +84,9 @@ class SurveyServiceImpl(
 
         if (question::class != editQuestion::class)
             throw CustomException(SurveyExceptionDetails.QUESTION_TYPE_MISMATCH, questionId, question.guessType())
+
+        if (!editQuestion.validate())
+            throw CustomException(SurveyExceptionDetails.QUESTION_VALIDATION_FAILED)
 
         val final = surveyRepository.save(
             survey.copy(
