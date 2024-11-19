@@ -9,12 +9,12 @@ class JwtAuthToken : AbstractAuthenticationToken {
 
     constructor(details: UserDetails, authorities: List<GrantedAuthority>) : super(authorities) {
         this.principal = details
-        isAuthenticated = true
+        super.setAuthenticated(true)
     }
 
     constructor(jwt: String) : super(null) {
         this.principal = jwt
-        isAuthenticated = false
+        super.setAuthenticated(false)
     }
 
     override fun setAuthenticated(authenticated: Boolean) {
