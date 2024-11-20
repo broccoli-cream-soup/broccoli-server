@@ -27,7 +27,7 @@ class SurveyServiceImpl(
     private val memberRepository: MemberJpaRepository,
     private val memberHolder: MemberHolder,
 ) : SurveyService {
-    override fun discoverSurvey(): List<soup.cream.broccoli.survey.business.survey.dto.SurveyInfoDto> {
+    override fun discoverSurvey(): List<SurveyInfoDto> {
         val survey = surveyRepository.findAllBy()  // TODO: Pagination
         return survey.map { it.toDto(getAuthorById(it.authorId)) }
     }

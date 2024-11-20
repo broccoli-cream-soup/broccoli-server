@@ -19,7 +19,7 @@ class SurveyController(
     private val surveyService: SurveyService,
 ) {
     @GetMapping
-    fun discoverSurvey(): ResponseEntity<ResponseData<List<soup.cream.broccoli.survey.business.survey.dto.SurveyInfoDto>>> {
+    fun discoverSurvey(): ResponseEntity<ResponseData<List<SurveyInfoDto>>> {
         val res = surveyService.discoverSurvey()
         return ResponseData.ok(data = res)
     }

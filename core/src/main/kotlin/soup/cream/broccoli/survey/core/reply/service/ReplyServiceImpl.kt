@@ -99,7 +99,7 @@ class ReplyServiceImpl(
     }
 
     @Transactional(rollbackFor = [Exception::class])
-    override fun editReply(replyId: String, answerDto: soup.cream.broccoli.survey.business.reply.dto.AnswerDto): ReplyDto {
+    override fun editReply(replyId: String, answerDto: AnswerDto): ReplyDto {
         val found = replyRepository.findByIdOrNull(ObjectId(replyId))
             ?: throw CustomException(ReplyExceptionDetails.REPLY_NOT_FOUND)
 

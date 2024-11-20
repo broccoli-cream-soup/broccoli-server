@@ -28,7 +28,7 @@ class ReplyController(
     @PatchMapping("/{id}")
     fun editAnswerOnReply(
         @PathVariable id: String,
-        @RequestBody dto: soup.cream.broccoli.survey.business.reply.dto.AnswerDto,
+        @RequestBody dto: AnswerDto,
     ): ResponseEntity<ResponseData<ReplyDto>> {
         val res = replyService.editReply(id, dto)
         return ResponseData.ok(data = res)

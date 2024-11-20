@@ -7,5 +7,5 @@ data class SurveyInfoDto(
     val name: String,
     val description: String,
 
-    val surveyType: soup.cream.broccoli.survey.business.survey.dto.SurveyTypeDto = soup.cream.broccoli.survey.business.survey.dto.SurveyTypeDto.ANONYMOUS,
+    val surveyType: SurveyTypeDto = SurveyTypeDto.ANONYMOUS,
 )

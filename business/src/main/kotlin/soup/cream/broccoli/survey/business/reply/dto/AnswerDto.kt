@@ -9,7 +9,7 @@ import soup.cream.broccoli.survey.business.survey.dto.QuestionType
 import java.time.LocalDate
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.CUSTOM, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "type")
-@JsonTypeIdResolver(soup.cream.broccoli.survey.business.reply.dto.AnswerDto.AnswerDtoTypeResolver::class)
+@JsonTypeIdResolver(AnswerDto.AnswerDtoTypeResolver::class)
 sealed interface AnswerDto {
     val questionId: String
     val type: QuestionType

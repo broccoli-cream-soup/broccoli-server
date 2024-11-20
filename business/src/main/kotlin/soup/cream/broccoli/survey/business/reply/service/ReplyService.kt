@@ -8,5 +8,5 @@ interface ReplyService {
     fun createReply(dto: ReplyCreateDto): ReplyDto
     fun getReplyByMe(): List<ReplyDto> // requires authorize
 //    fun getReplyById(replyId: String): ReplyDto // create or not
-    fun editReply(replyId: String, answerDto: soup.cream.broccoli.survey.business.reply.dto.AnswerDto): ReplyDto
+    fun editReply(replyId: String, answerDto: AnswerDto): ReplyDto
 }

@@ -4,5 +4,5 @@ data class ReplyDto(
     val id: String,
     val surveyId: String,
     val userId: Long?,
-    val answers: Set<soup.cream.broccoli.survey.business.reply.dto.AnswerDto>,
+    val answers: Set<AnswerDto>,
 )

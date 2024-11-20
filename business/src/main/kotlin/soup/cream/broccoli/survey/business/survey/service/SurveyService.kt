@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service
 
 @Service
 interface SurveyService {
-    fun discoverSurvey(): List<soup.cream.broccoli.survey.business.survey.dto.SurveyInfoDto>
+    fun discoverSurvey(): List<SurveyInfoDto>
 
     fun createSurvey(dto: SurveyCreateDto): SurveyDto
     fun getSurvey(surveyId: String): SurveyDto
