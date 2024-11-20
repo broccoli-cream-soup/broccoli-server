@@ -53,7 +53,7 @@ allprojects {
     }
 
     tasks.bootJar {
-        enabled = true
+        enabled = false
     }
 
     dependencies {
@@ -101,4 +101,8 @@ tasks.withType<Test> {
 
 tasks.jar {
     enabled = false
+}
+
+tasks.bootJar {
+    enabled = true
 }
