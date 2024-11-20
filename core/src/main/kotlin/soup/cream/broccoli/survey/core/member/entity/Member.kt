@@ -1,8 +1,6 @@
 package soup.cream.broccoli.survey.core.member.entity
 
-import jakarta.persistence.Column
-import jakarta.persistence.Entity
-import jakarta.persistence.Id
+import jakarta.persistence.*
 import soup.cream.broccoli.survey.core.common.entity.BaseTimeEntity
 import soup.cream.broccoli.survey.core.common.entity.IdLong
 
@@ -18,5 +16,6 @@ data class Member(
     val name: String,
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     val id: IdLong = IdLong.NULL
 ) : BaseTimeEntity()
