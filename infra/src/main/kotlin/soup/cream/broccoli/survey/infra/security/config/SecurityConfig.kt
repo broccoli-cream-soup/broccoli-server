@@ -2,7 +2,7 @@ package soup.cream.broccoli.survey.infra.security.config
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import soup.cream.broccoli.survey.common.exception.GlobalExceptionDetail
-import soup.cream.broccoli.survey.common.exception.response.ResponseError
+import soup.cream.broccoli.survey.common.response.ResponseError
 import soup.cream.broccoli.survey.infra.exception.AuthExceptionHandleFilter
 import soup.cream.broccoli.survey.infra.security.jwt.JwtAuthFilter
 import jakarta.servlet.http.HttpServletResponse

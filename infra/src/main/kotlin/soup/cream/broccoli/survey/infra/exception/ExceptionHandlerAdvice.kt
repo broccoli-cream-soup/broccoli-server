@@ -2,7 +2,7 @@ package soup.cream.broccoli.survey.infra.exception
 
 import soup.cream.broccoli.survey.common.exception.CustomException
 import soup.cream.broccoli.survey.common.exception.GlobalExceptionDetail
-import soup.cream.broccoli.survey.common.exception.response.ResponseError
+import soup.cream.broccoli.survey.common.response.ResponseError
 import soup.cream.broccoli.survey.core.auth.exception.AuthExceptionDetails
 import org.slf4j.LoggerFactory
 import org.springframework.http.ResponseEntity

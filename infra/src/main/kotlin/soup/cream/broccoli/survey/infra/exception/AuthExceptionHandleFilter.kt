@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import soup.cream.broccoli.survey.common.exception.CustomException
 import soup.cream.broccoli.survey.common.exception.ExceptionDetail
 import soup.cream.broccoli.survey.common.exception.GlobalExceptionDetail
-import soup.cream.broccoli.survey.common.exception.response.ResponseError
+import soup.cream.broccoli.survey.common.response.ResponseError
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
