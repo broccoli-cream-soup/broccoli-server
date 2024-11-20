@@ -8,7 +8,6 @@ import soup.cream.broccoli.survey.business.survey.dto.create.QuestionCreateDto
 import soup.cream.broccoli.survey.business.survey.dto.create.SurveyCreateDto
 import soup.cream.broccoli.survey.business.survey.service.SurveyService
 import soup.cream.broccoli.survey.common.exception.CustomException
-import soup.cream.broccoli.survey.core.common.entity.FetchableId
 import soup.cream.broccoli.survey.core.member.MemberHolder
 import soup.cream.broccoli.survey.core.member.repository.MemberJpaRepository
 import soup.cream.broccoli.survey.core.survey.entity.Question
@@ -18,6 +17,7 @@ import soup.cream.broccoli.survey.core.survey.extensions.*
 import soup.cream.broccoli.survey.core.survey.repository.SurveyRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import soup.cream.broccoli.survey.core.common.entity.IdLong
 
 @Service
 @Transactional(readOnly = true, rollbackFor = [Exception::class])
@@ -36,7 +36,7 @@ class SurveyServiceImpl(
     override fun createSurvey(dto: SurveyCreateDto): SurveyDto {
         val me = memberHolder.get()
 
-        val created = surveyRepository.save(Survey.create(dto, me.id.id))
+        val created = surveyRepository.save(Survey.create(dto, me.id.get))
 
         return created.toDto(me.name)
     }
@@ -128,5 +128,5 @@ class SurveyServiceImpl(
         return final.toDto(memberHolder.get().name)
     }
 
-    private fun getAuthorById(memberId: Long) = FetchableId(memberId).fetch(memberRepository)?.name ?: "사라진 유저"
+    private fun getAuthorById(memberId: Long) = IdLong(memberId).fetch(memberRepository)?.name ?: "사라진 유저"
 }

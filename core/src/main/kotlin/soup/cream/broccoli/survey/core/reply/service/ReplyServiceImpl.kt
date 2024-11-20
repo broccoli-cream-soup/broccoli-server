@@ -46,14 +46,14 @@ class ReplyServiceImpl(
 
             SurveyType.AUTHENTICATED_ONCE -> {
                 me ?: throw CustomException(ReplyExceptionDetails.REPLY_NOT_ACCEPTABLE_ANONYMOUS)
-                val alreadyReplied = replyRepository.existsReplyByUserIdAndSurveyId(me.id.id, survey.id)
+                val alreadyReplied = replyRepository.existsReplyByUserIdAndSurveyId(me.id.get, survey.id)
                 if (alreadyReplied)
                     throw CustomException(ReplyExceptionDetails.REPLY_NOT_ACCEPTABLE_DUPLICATE)
             }
         }
         // VALIDATE END
 
-        val created = Reply.create(dto, me?.id?.id)
+        val created = Reply.create(dto, me?.id?.get)
 
         // VALIDATE: each answers
         val idMap = survey.questions.associateBy { it.id }.toMutableMap()
@@ -93,7 +93,7 @@ class ReplyServiceImpl(
 
     override fun getReplyByMe(): List<ReplyDto> {
         val me = holder.get()
-        val found = replyRepository.findRepliesByUserIdIs(me.id.id)
+        val found = replyRepository.findRepliesByUserIdIs(me.id.get)
 
         return found.map { it.toDto() }
     }
@@ -103,7 +103,7 @@ class ReplyServiceImpl(
         val found = replyRepository.findByIdOrNull(ObjectId(replyId))
             ?: throw CustomException(ReplyExceptionDetails.REPLY_NOT_FOUND)
 
-        if (found.userId != holder.get().id.id)
+        if (found.userId != holder.get().id.get)
             throw CustomException(ReplyExceptionDetails.NOT_YOUR_REPLY)
 
         val modified = (found.answers.filter {

@@ -37,7 +37,7 @@ class AuthServiceImpl(
             throw CustomException(AuthExceptionDetails.USER_ALREADY_EXISTS, credential)
 
         return memberRepository.save(Member(credential, passwordEncoder.encode(password), name))
-            .id.id
+            .id.get
     }
 
     override fun getNewToken(refreshToken: String): TokenDto {

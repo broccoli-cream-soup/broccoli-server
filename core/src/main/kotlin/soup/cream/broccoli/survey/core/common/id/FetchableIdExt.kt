@@ -1,8 +1,8 @@
 package soup.cream.broccoli.survey.core.common.id
 
-import soup.cream.broccoli.survey.core.common.entity.FetchableId
+import soup.cream.broccoli.survey.core.common.entity.BaseId
 
-infix fun FetchableId.eq(other: Long) = id == other
-infix fun FetchableId.eq(other: FetchableId) = id == other.id
-infix fun FetchableId.ne(other: Long) = id != other
-infix fun FetchableId.ne(other: FetchableId) = id != other.id
+infix fun <ID : Any> BaseId<ID>.eq(other: ID) = get == other
+infix fun <ID : Any> BaseId<ID>.eq(other: BaseId<ID>) = get == other.get
+infix fun <ID : Any> BaseId<ID>.ne(other: ID) = get != other
+infix fun <ID : Any> BaseId<ID>.ne(other: BaseId<ID>) = get != other.get
