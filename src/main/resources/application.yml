@@ -1,5 +1,5 @@
 spring:
-  application.name: spring_templates
+  application.name: survey
   datasource:
     url: jdbc:mariadb://${DATASOURCE_URL}/${DATASOURCE_PATH}
     username: ${DATASOURCE_USERNAME}

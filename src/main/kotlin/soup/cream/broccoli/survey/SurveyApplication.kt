@@ -4,8 +4,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 
 @SpringBootApplication
-class SpringTemplatesApplication
+class SurveyApplication
 
 fun main(args: Array<String>) {
-    runApplication<SpringTemplatesApplication>(*args)
+    runApplication<SurveyApplication>(*args)
 }
