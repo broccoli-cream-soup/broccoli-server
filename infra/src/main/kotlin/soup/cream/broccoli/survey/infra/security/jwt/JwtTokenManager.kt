@@ -6,6 +6,9 @@ import soup.cream.broccoli.survey.infra.security.details.MemberDetailsService
 import io.jsonwebtoken.*
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Component
+import soup.cream.broccoli.survey.common.exception.CustomException
+import soup.cream.broccoli.survey.common.exception.GlobalExceptionDetail
+import soup.cream.broccoli.survey.core.auth.exception.AuthExceptionDetails
 import java.time.Instant
 import java.util.*
 
@@ -28,7 +31,7 @@ class JwtTokenManager(
         // Check the token is 'REFRESH' state (if token is 'ACCESS' throw CustomException)
         val payload = getTokenValidate(refreshToken, JwtType.REFRESH)
 
-        val memberDetails = memberDetailsService.loadUserByUsername(payload?.subject.toString())
+        val memberDetails = memberDetailsService.loadUserByUsername(payload.subject.toString())
 
         // authenticate manually
         val auth = JwtAuthToken(memberDetails, listOf())
@@ -36,21 +39,26 @@ class JwtTokenManager(
         return generateToken(JwtType.ACCESS)
     }
 
-    override fun getTokenValidate(token: String, requiredType: JwtType): Claims? {
+    override fun getTokenValidate(token: String, requiredType: JwtType): Claims {
+        // throwing is acceptable: handling exception on both filter and advice
         try {
             val parser = Jwts.parser()
                 .verifyWith(jwtProperties.secretKey)
                 .build()
                 .parse(token)
                 .accept(Jws.CLAIMS)
-            if (parser.header.type != requiredType.name) return null
+            if (parser.header.type != requiredType.name)
+                throw CustomException(AuthExceptionDetails.TOKEN_TYPE_MISMATCH)
             return parser.payload
+        } catch (e: ExpiredJwtException) {
+            throw CustomException(AuthExceptionDetails.EXPIRED_TOKEN)
         } catch (_: JwtException) {
         } catch (_: IllegalArgumentException) {
         } catch (e: Exception) {
             e.printStackTrace()
+            throw CustomException(GlobalExceptionDetail.INTERNAL_SERVER_ERROR)
         }
-        return null
+        throw CustomException(AuthExceptionDetails.INVALID_TOKEN)
     }
 
     private fun generateToken(type: JwtType): String {
