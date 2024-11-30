@@ -83,6 +83,7 @@ jobs:
             rm ./production.env
   
   cleanup:
+    needs: ["build", "publish"]
     runs-on: ubuntu-latest
     steps:
       - name: adapttive/cache-delete
