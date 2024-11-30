@@ -9,37 +9,18 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: ${{ github.ref }}
-          
+
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
           distribution: 'corretto'
           java-version: '17'
-      
+
       - name: Build with Gradle
         run: |
           chmod +x gradlew
           ./gradlew build
-      
-      - name: Cache Build
-        id: cache-build
-        uses: actions/cache/save@v3
-        with:
-          key: ${{ github.sha }}-built-jar
-          path: ${{ github.workspace }}/build/libs
-  
-  publish:
-    needs: ['build']
-    if: github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
-    
-    steps:
-      - uses: actions/cache/restore@v3
-        id: restore-build
-        with:
-          path: ${{ github.workspace }}/build/libs
-          key: ${{ github.sha }}-built-jar
-          
+
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
 
@@ -61,7 +42,13 @@ jobs:
           tags: ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGE_NAME }}:latest
           file: Dockerfile
           context: .
+  
+  publish:
+    needs: ['build']
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
 
+    steps:
       - name: Add to Docker
         uses: appleboy/ssh-action@v1.0.3
         with:
@@ -72,22 +59,12 @@ jobs:
           script: |
             docker stop $(docker ps -aq -f 'ancestor=${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGE_NAME }}')
             docker rm $(docker ps -aq -f 'ancestor=${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGE_NAME }}')
-            
+
             docker pull ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGE_NAME }}:latest
-            
+
             touch ./production.env
             echo '${{ secrets.ENVIRONMENT }}' | base64 --decode > ./production.env
-            
+
             docker run --env-file production.env -d -p 8080:8080 --name broccoli ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGE_NAME }}
-            
+
             rm ./production.env
-  
-  cleanup:
-    needs: ["build", "publish"]
-    runs-on: ubuntu-latest
-    steps:
-      - name: adapttive/cache-delete
-        uses: adapttive/cache-delete-action@v1.1
-        with:
-          github-token: ${{ secrets.ADMIN_GITHUB_TOKEN }}
-          cache-key: ${{ github.sha }}-built-jar 
