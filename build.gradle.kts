@@ -92,7 +92,9 @@ dependencies {
     implementation(project(":core"))
     implementation(project(":infra"))
 
-    runtimeOnly("org.mariadb.jdbc:mariadb-java-client")
+//    runtimeOnly("org.mariadb.jdbc:mariadb-java-client")
+    runtimeOnly("com.mysql:mysql-connector-j:9.1.0")
+
 }
 
 tasks.withType<Test> {
