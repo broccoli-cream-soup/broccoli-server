@@ -43,6 +43,7 @@ class SecurityConfig(
                     .requestMatchers("/auth/**").anonymous() // .permitAll()
                     .requestMatchers(HttpMethod.GET, "/survey", "/survey/**").permitAll()
                     .requestMatchers(HttpMethod.POST, "/reply").permitAll()
+                    .requestMatchers(   "/swagger-ui/**", "/v3/api-docs/**").permitAll()
                     .anyRequest().authenticated()
             }
             .addFilterBefore(authExceptionFilter, UsernamePasswordAuthenticationFilter::class.java)
